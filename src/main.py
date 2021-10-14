@@ -1,7 +1,7 @@
-from http_helper import http_helper
+from server_helper import server_helper
 
 
 if __name__ == "__main__":
-    route = http_helper()
+    server = server_helper(web_path="./webroot")
 
-    route.listen()
+    server.listen()
