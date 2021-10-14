@@ -1,7 +1,8 @@
+import os
 import socket
 from concurrent.futures import ThreadPoolExecutor
 
-import http_server
+from http_server import http_context
 
 
 class server_helper:
@@ -40,26 +41,29 @@ class server_helper:
                                client_socket)  # 提交线程池任务
 
     def server_handler(self, client_socket):
-        # 1. 接收数据，反序列化
-        req_str = client_socket.recv(1024).decode()
-        req = http_server.http_req(req_str)
+        ctx = http_context(client_socket)
 
-        # 2. 路径分析
-        url = req.get_url()
-        if not os.path.is_file(self.web_path + url):    # 路径不存在
-            http_server.http_rsp()
+        # 1. 反序列化，解析请求
+        ctx.parse()
 
-        # 构造响应数据
+        # 2. 分析请求类型
+        method = ctx.get_method()
+        url = ctx.get_url()
+        if method == "GET":
 
+        elif method == "POST":
+
+        else:
+            ctx.set(404, {}, self.index_404)
+
+        # 3. 路径判断
+        if not os.path.isfile(self.web_path + url):    # 路径不存在
+            ctx.set(404, {}, self.index_404)
+
+        # 4. 执行操作
         f = open(self.web_path + "/index.html", "r", encoding="utf-8")
-        response_body = f.read()
+        body = f.read()
         f.close()
 
-        # response_body = "<h1>Hello</h1>"
-        response = response_start_line + response_headers + "\r\n" + response_body
-
-        # 向客户端返回响应数据
-        client_socket.send(bytes(response, "utf-8"))
-
-        # 关闭客户端连接
-        client_socket.close()
+        # 5. 回包
+        ctx.set(200, {}, body).response()
