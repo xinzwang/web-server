@@ -50,11 +50,12 @@ class server_helper:
         method = ctx.get_method()
         url = ctx.get_url()
         if method == "GET":
-
+            a = 1
         elif method == "POST":
-
+            a = 1
         else:
             ctx.set(404, {}, self.index_404)
+            return 0
 
         # 3. 路径判断
         if not os.path.isfile(self.web_path + url):    # 路径不存在

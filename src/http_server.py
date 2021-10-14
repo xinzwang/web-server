@@ -38,11 +38,11 @@ class http_context:
             k, v = head[i].split(": ")
             req_head[k] = v
 
-        self.method = req_line[0]
-        self.url = req_line[1]
-        self.version = req_line[2]
-        self.head = req_head
-        self.body = head_body[1]
+        self.req_method = req_line[0]
+        self.req_url = req_line[1]
+        self.req_version = req_line[2]
+        self.req_head = req_head
+        self.req_body = head_body[1]
 
     def get_url(self):
         return self.req_url
@@ -70,7 +70,7 @@ class http_context:
         for h in self.rsp_header:
             headers += str(h) + ": " + self.rsp_header[h] + "\r\n"
 
-        rsp = start_line + headers + "\r\n" + self.body
+        rsp = start_line + headers + "\r\n" + self.rsp_body
 
         self.socket.send(bytes(rsp, "utf-8"))
         self.socket.close()
