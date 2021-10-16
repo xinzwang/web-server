@@ -56,15 +56,15 @@ class WorkThread(threading.Thread):
         receiveMsg = receiveMsg.decode("utf-8")
         print(receiveMsg)
         request = HttpRequest()
-        params = request.parseRequest(receiveMsg)
+        request = request.parseRequest(receiveMsg)
         response = HttpResponse()
         url = 'templates/index.html'
-        if params['url'] == "/":
+        if request['url'] == "/":
             url = 'templates/index.html'
         else:
-            url = 'templates' + params['url']
+            url = 'templates' + request['url']
 
-        if(params['url']!='/favicon.ico'):
+        if(request['url']!='/favicon.ico'):
             try:
                 responseText = response.responseHeader() + "\n" + response.responseBody(url)
             except Exception:
