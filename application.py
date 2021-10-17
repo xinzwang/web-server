@@ -1,9 +1,11 @@
 import socket
 import threading
 from response import HttpResponse
-from request  import HttpRequest
+from request import HttpRequest
 
 # WSGI服务器
+
+
 class WSGIServer():
 
     def __init__(self, host='localhost', port=8080, connectSize=100):
@@ -27,8 +29,10 @@ class WSGIServer():
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server.bind((self.__host, self.__port))
             server.listen(self.__connectSize)
+            print("======服务器启动成功：http://" +
+                  self.__host + ":" + str(self.__port))
             while True:
-                print("======服务器启动成功：http://" + self.__host + ":" + str(self.__port))
+
                 clientConn, clientAddr = server.accept()  # 等待客户端请求
                 # 启动独立的线程，处理每一次用户请求
                 wt = WorkThread(clientConn, clientAddr)
@@ -42,6 +46,7 @@ class WSGIServer():
         pass
 
     pass
+
 
 class WorkThread(threading.Thread):
     def __init__(self, connection, addr, bufferSize=8096):
@@ -64,11 +69,11 @@ class WorkThread(threading.Thread):
         else:
             url = 'templates' + request['url']
 
-        if(request['url']!='/favicon.ico'):
+        if(request['url'] != '/favicon.ico'):
             try:
                 responseText = response.responseHeader() + "\n" + response.responseBody(url)
             except Exception:
-                responseText=response.resopnseError()+'\n'+'404'
+                responseText = response.resopnseError()+'\n'+'404'
             print(responseText)
             self.__connection.send(responseText.encode("utf-8"))
             self.__connection.close()
