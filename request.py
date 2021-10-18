@@ -1,12 +1,14 @@
 class HttpRequest():
     # 标头
     def parseRequest(self, requestText):
+
         request = {}
         # parse http header
         a = requestText.split("\r\n\r\n")
         head = a[0]
-        body = a[1]
-        request['body'] = body
+        if len(a) > 1:
+            body = a[1]
+            request['body'] = body
 
         b = head.split("\r\n")
         request_line = b[0]
@@ -23,11 +25,12 @@ class HttpRequest():
         d = c[1].split("?")
         request['url'] = d[0]
 
-        e = d[1].split('&')
         request['params'] = {}
-        for l in e:
-            k, v = l.split('=')
-            request['params'][k] = v
+        if len(d) > 1:
+            e = d[1].split('&')
+            for l in e:
+                k, v = l.split('=')
+                request['params'][k] = v
 
         request['cookies'] = {}
 
