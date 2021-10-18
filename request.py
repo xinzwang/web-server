@@ -2,23 +2,42 @@ class HttpRequest():
     # 标头
     def parseRequest(self, requestText):
         request = {}
-        array = requestText.split('\r\n')[0].split(' ')
+        # parse http header
+        a = requestText.split("\r\n\r\n")
+        head = a[0]
+        body = a[1]
+        request['body'] = body
 
-        request['method'] = array[0]
-        if(request['method'] == 'POST'):
-            params_list = array[1][2:].split('&')
-            request['body'] = {
-                'params': {}
-            }
-            for param in params_list:
-                param = param.split('=')
-                key, value = param[0], param[1]
-                request['body']['params'][key] = value
-        elif(request['method'] == 'GET'):
-            request['url'] = array[1]
-            pass
-        request['httptype'] = array[2]
+        b = head.split("\r\n")
+        request_line = b[0]
+
+        request['head'] = {}
+        for i in range(1, len(b)):
+            k, v = b[i].split(': ')
+            request['head'][k] = v
+
+        c = request_line.split(" ")
+        request['method'] = c[0]
+        request['version'] = c[2]
+
+        d = c[1].split("?")
+        request['url'] = d[0]
+
+        e = d[1].split('&')
+        request['params'] = {}
+        for l in e:
+            k, v = l.split('=')
+            request['params'][k] = v
+
         request['cookies'] = {}
+
+        # return
+        if request['method'] == 'GET':
+            pass
+        elif request['method'] == 'POST':
+            pass
+        else:
+            pass
 
         return request
         pass
