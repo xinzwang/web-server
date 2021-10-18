@@ -4,36 +4,55 @@
 
 兼容CGI的多线程静态、动态Web服务框架。
 
+网站的所有资源放在webroot文件夹下
+
+服务器的工作代码是茛目录下的几个.py文件
+
+```
+web-server  --源码目录
+|
+├─ application.py  -- 服务逻辑代码
+├─ request.py      -- http请求解析类
+├─ response.py     -- http回包类
+├─ server.py       -- 主函数
+├─ .gitignore
+├─ LICENSE
+├─ README.md
+│      
+└─webroot  -- 网站根目录
+   ├─ 404.html        -- 默认网页 找不到对应资源
+   ├─ ERROR.html      -- 默认网页 出现错误
+   ├─ index.html      -- 一个网页
+   ├─ calculator.html -- 一个网页
+   ├─ query.html      -- 一个网页
+   │  
+   ├─cgi-bin -- cgi程序
+   │   ├─ calculator.py
+   │   ├─ query.py
+   │   └─ test.py
+   │      
+   └─log  --日志文件夹
+       └─ 2021-10-18.log
+```
+
 ## 二、使用说明
 
 运行环境：python 3
 
-1. 运行命令：cd ./src && python main.py
+1. 运行命令：python server.py
 
-2. 使用浏览器访问：[localhost:8888](localhost:8888)
+2. 使用浏览器访问：[localhost:8888/index.html](localhost:8888/index.html)
 
 ## 三、分工
 
 1. http部分框架
-2. CGI部分框架	
+2. CGI部分框架
 3. 编写动态网页、静态网页
 4. 测试、截屏
 5. 文档、PPT报告
 
-| 姓名 | 分工 |
-|:--:|:--:|
-| 王欣哲 | http部分 |
-| 贾雨涵 | |
-| 朱之悦 | |
-| 薛慕樊 | |
-| 罗瑆琪 | |
-| 王思程 | |
-| 谢东桓 | |
-| 杨璐铭 | |
-| 王泽龙 | |
+## 四、 TODO
 
-## 四 TODO
-
-- [x] 解析POST请求
-- [ ] 重构HttpRequest
-- [ ] 发送文件支持
+* [√] 解析POST请求
+* [√] 重构HttpRequest
+* [?] 发送文件支持
