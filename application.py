@@ -1,3 +1,4 @@
+import time
 import socket
 import threading
 from subprocess import Popen, PIPE
@@ -9,6 +10,7 @@ from request import HttpRequest
 
 
 WEB_ROOT = "./webroot"
+LOG_ROOT = "./webroot/log"
 
 
 class WSGIServer():
@@ -64,7 +66,10 @@ class WorkThread(threading.Thread):
         # 1.解析请求
         receiveMsg = self.__connection.recv(self.__bufferSize)
         receiveMsg = receiveMsg.decode("utf-8")
+
+        self.log(self.__addr, receiveMsg)  # 记录日志
         print(receiveMsg)
+
         request = HttpRequest()
         request = request.parseRequest(receiveMsg)
         response = HttpResponse()
@@ -82,11 +87,12 @@ class WorkThread(threading.Thread):
             if(request['url'] == '/favicon.ico'):
                 responseText = response.responseHeader() + "\n" + \
                     response.responseBody(WEB_ROOT+"/404.html")
-            try:
-                responseText = response.responseHeader() + "\n" + response.responseBody(url)
-            except Exception:
-                responseText = response.responseHeader() + "\n" + \
-                    response.responseBody(WEB_ROOT+"/404.html")
+            else:
+                try:
+                    responseText = response.responseHeader() + "\n" + response.responseBody(WEB_ROOT+url)
+                except Exception:
+                    responseText = response.responseHeader() + "\n" + \
+                        response.responseBody(WEB_ROOT+"/404.html")
             print(responseText)
 
         elif request['method'] == "POST":
@@ -100,6 +106,7 @@ class WorkThread(threading.Thread):
                 cmd = ["python", WEB_ROOT+"/cgi-bin/{}.py".format(appName)]
                 for a in argvList:
                     cmd.append(a)
+                cmd.append(request['body'])
 
                 process = Popen(cmd, stdout=PIPE, stderr=PIPE)
 
@@ -116,4 +123,14 @@ class WorkThread(threading.Thread):
         self.__connection.send(responseText.encode("utf-8"))
         self.__connection.close()
 
-    pass
+    def log(self, addr, data):
+        date = time.strftime("%Y-%m-%d")
+        path = LOG_ROOT+'/' + date+'.log'
+
+        date = time.strftime("%Y-%m-%d %H:%M:%S")
+        d = data.replace('\r\n', ' ')
+        s = "[\'" + date + "\'] " + str(addr) + " " + d
+
+        f = open(path, 'w')
+        f.write(s)
+        f.close()

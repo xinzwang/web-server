@@ -1,10 +1,14 @@
-#coding=utf-8
+# coding=utf-8
 import os
 import sys
 
 
-data1 = int(sys.argv[1])
-data2 = int(sys.argv[2])
+# data1 = int(sys.argv[1])
+# data2 = int(sys.argv[2])
+
+data1 = 1
+data2 = 2
+
 calculToShow = '''
                 <!DOCTYPE html>
                 <html lang="en">

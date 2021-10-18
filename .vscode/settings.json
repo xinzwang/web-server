@@ -1,0 +1,18 @@
+{
+	"cSpell.words": [
+		"bind",
+		"communicate",
+		"favicon",
+		"gaierror",
+		"listen",
+		"Popen",
+		"REUSEADDR",
+		"self",
+		"setsockopt",
+		"SOCK",
+		"socket",
+		"SOCKET",
+		"Thread",
+		"threading"
+	]
+}
