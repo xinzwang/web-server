@@ -8,7 +8,18 @@ data = json.loads(sys.argv[1])
 
 num1 = int(data['data1'])
 num2 = int(data['data2'])
+op = data['op']
 
-res = {'res': num1+num2}
+res = None
+if op == '+':
+    res = num1 + num2
+elif op == '-':
+    res = num1 - num2
+elif op == '*':
+    res = num1 * num2
+elif op == '/':
+    res = num1 / num2
 
-print(json.dumps(res))
+dic = {'res': res}
+
+print(json.dumps(dic))

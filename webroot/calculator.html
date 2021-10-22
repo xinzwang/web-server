@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-	<title>Login</title>
+	<title>计算器</title>
 	<style>
 		html {
 			width: 100%;
@@ -107,14 +107,11 @@
 
 <body>
 	<div id="app">
-		<transition>
-			<p v-if="displayInfo" class="info" v-cloak>{{ infoText }}</p>
-		</transition>
-
 		<div id="header">
 			<br>
 			<h1>This is a calculator</h1>
 		</div>
+
 		<div id="nav">
 			<h1>+</h1><br>
 			<h1>-</h1><br>
@@ -122,6 +119,17 @@
 			<h1>/</h1><br>
 			<h1>%</h1><br>
 		</div>
+
+		<div id="login">
+			<label>第一个数</label><input v-model='submit_data.data1' required="required">
+			<label>运算符</label><input v-model='submit_data.op' required="required">
+			<label>第二个数</label><input v-model='submit_data.data2' required="required">
+
+			<button @click="submit" style="width: 100px; height: 30px;">结果</button><br>
+			<label>结果</label><input v-model='result' id="res" type="text" name="res">
+
+		</div>
+
 		<div id="section">
 			<h1>+</h1><br>
 			<h1>-</h1><br>
@@ -129,24 +137,9 @@
 			<h1>/</h1><br>
 			<h1>%</h1><br>
 		</div>
+
 		<div id="footer">
 			Copyright ? 07111809-bit.com
-		</div>
-		<div id="login">
-			<font color="#ffffff">First Number：</font><input v-model='submit_data.data1' id="data_1" type="text"
-				required="required" name="data_1">
-			<font color="#ffffff">Second Number：</font><input v-model='submit_data.data2' id="data_2" type="text"
-				required="required" name="data_2">
-			<button @click="submit">计算</button>
-			<font color="#ffffff">Result:</font><input v-model='result' id="res" type="text" name="res">
-
-		</div>
-
-		<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
-			<div class="xl-chrome-ext-bar__logo"></div>
-
-			<a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option">下载视频</a>
-			<a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
 		</div>
 	</div>
 </body>
@@ -157,25 +150,19 @@
 	const vm = new Vue({
 		el: "#app",
 		data: {
-			displayInfo: false,
-			infoText: "",
 			submit_data: {
 				data1: null,
 				data2: null,
-				op: '+'
+				op: null
 			},
 			result: null
 		},
 
 		methods: {
 			submit: function () {
-				if (this.submit_data.data1 == null || this.submit_data.data2 == null) {
-					this.infoText = "Please input number",
-						this.displayInfo = true
-					let that = this;
-					setTimeout(function () {
-						that.isInfo = false;
-					}, 1200);
+				if (this.submit_data.data1 == null || this.submit_data.data2 == null || this.submit_data.op ==
+					null) {
+					window.confirm("请输入数字和运算符")
 				} else {
 					let k = this
 					axios({
