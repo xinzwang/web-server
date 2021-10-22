@@ -80,6 +80,8 @@ class WorkThread(threading.Thread):
             return
 
         # 2.url
+        if(request['url'] == '/'):
+                request['url'] = '/index.html'
         url = request['url']
 
         # 3.method
