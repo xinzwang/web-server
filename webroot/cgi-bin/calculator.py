@@ -1,14 +1,14 @@
 # coding=utf-8
 import os
 import sys
+import json
+
+data = json.loads(sys.argv[1])
 
 
-a = sys.argv[1].split('&')
-data1 = a[0].split('=')
-data2 = a[1].split('=')
+num1 = int(data['data1'])
+num2 = int(data['data2'])
 
-num1 = int(data1[1])
-num2 = int(data2[1])
+res = {'res': num1+num2}
 
-
-print(str(num1+num2))
+print(json.dumps(res))

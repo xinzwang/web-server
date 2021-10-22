@@ -103,58 +103,94 @@
 			margin: 100px;
 		}
 	</style>
-	<script type="text/javascript">
-		function submit() {
-			var url = "./cgi-bin/calculator"
-			$.ajax({
-				url: url,
-				async: false,
-				success: function (data) {
-					console.log(data);
-					$('#result').html(data)
-				}
-			})
-		}
-	</script>
 </head>
 
 <body>
-	<div id="header">
-		<br>
-		<h1>This is a calculator</h1>
-	</div>
-	<div id="nav">
-		<h1>+</h1><br>
-		<h1>-</h1><br>
-		<h1>*</h1><br>
-		<h1>/</h1><br>
-		<h1>%</h1><br>
-	</div>
-	<div id="section">
-		<h1>+</h1><br>
-		<h1>-</h1><br>
-		<h1>*</h1><br>
-		<h1>/</h1><br>
-		<h1>%</h1><br>
-	</div>
-	<div id="footer">
-		Copyright ? 07111809-bit.com
-	</div>
-	<div id="login">
-		<form>
-			<font color="#ffffff">First Number：</font><input type="text" required="required" name="data_1">
-			<font color="#ffffff">Second Number：</font><input type="text" required="required" name="data_2">
-			<button onclick="submit()">计算</button>
-			<pre id="result"></pre>
-		</form>
-	</div>
+	<div id="app">
+		<transition>
+			<p v-if="displayInfo" class="info" v-cloak>{{ infoText }}</p>
+		</transition>
 
-	<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
-		<div class="xl-chrome-ext-bar__logo"></div>
+		<div id="header">
+			<br>
+			<h1>This is a calculator</h1>
+		</div>
+		<div id="nav">
+			<h1>+</h1><br>
+			<h1>-</h1><br>
+			<h1>*</h1><br>
+			<h1>/</h1><br>
+			<h1>%</h1><br>
+		</div>
+		<div id="section">
+			<h1>+</h1><br>
+			<h1>-</h1><br>
+			<h1>*</h1><br>
+			<h1>/</h1><br>
+			<h1>%</h1><br>
+		</div>
+		<div id="footer">
+			Copyright ? 07111809-bit.com
+		</div>
+		<div id="login">
+			<font color="#ffffff">First Number：</font><input v-model='submit_data.data1' id="data_1" type="text"
+				required="required" name="data_1">
+			<font color="#ffffff">Second Number：</font><input v-model='submit_data.data2' id="data_2" type="text"
+				required="required" name="data_2">
+			<button @click="submit">计算</button>
+			<font color="#ffffff">Result:</font><input v-model='result' id="res" type="text" name="res">
 
-		<a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option">下载视频</a>
-		<a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
+		</div>
+
+		<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
+			<div class="xl-chrome-ext-bar__logo"></div>
+
+			<a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option">下载视频</a>
+			<a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
+		</div>
 	</div>
 </body>
+
+<script src="./query_files/vue.min.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script>
+	const vm = new Vue({
+		el: "#app",
+		data: {
+			displayInfo: false,
+			infoText: "",
+			submit_data: {
+				data1: null,
+				data2: null,
+				op: '+'
+			},
+			result: null
+		},
+
+		methods: {
+			submit: function () {
+				if (this.submit_data.data1 == null || this.submit_data.data2 == null) {
+					this.infoText = "Please input number",
+						this.displayInfo = true
+					let that = this;
+					setTimeout(function () {
+						that.isInfo = false;
+					}, 1200);
+				} else {
+					let k = this
+					axios({
+						method: 'post',
+						url: '/cgi-bin/calculator',
+						dataType: 'json',
+						data: this.submit_data
+					}).then(function (response) {
+						k.result = response.data.res;
+					})
+				}
+
+			}
+		}
+	})
+</script>
 
 </html>
