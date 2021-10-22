@@ -15,7 +15,7 @@ LOG_ROOT = "./webroot/log"
 
 class WSGIServer():
 
-    def __init__(self, host='localhost', port=8888, connectSize=100):
+    def __init__(self, host='0.0.0.0', port=8888, connectSize=100):
         '''
         :param port: 服务器的端口号
         :param connectSize: 默认的并发数量
@@ -50,7 +50,6 @@ class WSGIServer():
             if server:
                 server.close()
         pass
-
     pass
 
 
