@@ -3,35 +3,12 @@ import os
 import sys
 
 
-# data1 = int(sys.argv[1])
-# data2 = int(sys.argv[2])
+a = sys.argv[1].split('&')
+data1 = a[0].split('=')
+data2 = a[1].split('=')
 
-data1 = 1
-data2 = 2
+num1 = int(data1[1])
+num2 = int(data2[1])
 
-calculToShow = '''
-                <!DOCTYPE html>
-                <html lang="en">
 
-                <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                <title>RESULT</title>
-                <style type="text/css">
-                    body {{
-                        background-image: linear-gradient(#B0C4DE, #00ffff,#FAEBD7,#FFDAB9,#F5F5DC,#DAA520);
-                        background-size:cover;
-                        background-attachment:fixed;
-                    }}
-                </style>
-
-                </head>
-
-                <body>
-                    <p align="center"><font size="6" color="red">结果:{}</font><br /></p>
-    
-                </body>
-            '''
-
-print(calculToShow.format(str(data1+data2)))
+print(str(num1+num2))

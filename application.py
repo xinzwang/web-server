@@ -72,29 +72,29 @@ class WorkThread(threading.Thread):
 
         request = HttpRequest()
         request = request.parseRequest(receiveMsg)
-        response = HttpResponse()
+        response = HttpResponse(self.__connection)
+        if request == {}:
+            response.setCode(404)
+            response.setData_From_Url(WEB_ROOT+"/404.html")
+            response.response()
+            return
 
         # 2.url
         url = request['url']
-        # if request['url'] == "/":  # 默认网页
-        #     url = WEB_ROOT + '/index.html'
-        # else:
-        #     url = WEB_ROOT + request['url']
 
         # 3.method
         responseText = ""
         if request['method'] == "GET":
             if(request['url'] == '/favicon.ico'):
-                responseText = response.responseHeader() + "\n" + \
-                    response.responseBody(WEB_ROOT+"/404.html")
+                response.setCode(404)
+                response.setData_From_Url(WEB_ROOT+"/404.html")
             else:
                 try:
-                    responseText = response.responseHeader() + "\n" + response.responseBody(WEB_ROOT+url)
+                    response.setCode(200)
+                    response.setData_From_Url(WEB_ROOT+url)
                 except Exception:
-                    responseText = response.responseHeader() + "\n" + \
-                        response.responseBody(WEB_ROOT+"/404.html")
-            print(responseText)
-
+                    response.setCode(404)
+                    response.setData_From_Url(WEB_ROOT+"/404.html")
         elif request['method'] == "POST":
             if url[0:8] == "/cgi-bin":
                 appName = url.split("/")[2]
@@ -109,19 +109,22 @@ class WorkThread(threading.Thread):
                 cmd.append(request['body'])
 
                 process = Popen(cmd, stdout=PIPE, stderr=PIPE)
-
                 stdout, stderr = process.communicate()
                 print(stdout)
                 print(stderr)
-            pass
+
+                response.setCode(200)
+                response.setData(stdout)
+            else:
+                response.setCode(404)
+                response.setData_From_Url(WEB_ROOT+"/404.html")
         elif request['method'] == "HEAD":
             pass
         else:
             pass
 
         # 4.response
-        self.__connection.send(responseText.encode("utf-8"))
-        self.__connection.close()
+        response.response()
 
     def log(self, addr, data):
         date = time.strftime("%Y-%m-%d")
@@ -129,8 +132,8 @@ class WorkThread(threading.Thread):
 
         date = time.strftime("%Y-%m-%d %H:%M:%S")
         d = data.replace('\r\n', ' ')
-        s = "[\'" + date + "\'] " + str(addr) + " " + d
+        s = "[\'" + date + "\'] " + str(addr) + " " + d+"\n"
 
-        f = open(path, 'w')
+        f = open(path, 'a')
         f.write(s)
         f.close()

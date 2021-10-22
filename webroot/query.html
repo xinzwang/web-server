@@ -1,247 +1,258 @@
 <!DOCTYPE html>
 <!-- saved from url=(0032)http://localhost:8080/query.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HOME</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
+<html lang="en">
 
-        html {
-            width: 100vw;
-            height: 100vh;
-            font-size: 14px;
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            outline: none;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            min-height: 100vh;
-            transform: translateZ(0);
-            background: url("https://images.unsplash.com/photo-1451485435476-a244439c78cd?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjM0MDg1fQ&w=1920") center center / cover no-repeat;
-        }
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>HOME</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		html {
+			width: 100vw;
+			height: 100vh;
+			font-size: 14px;
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+			outline: none;
+			font-family: 'Montserrat', sans-serif;
+			font-weight: 400;
+			min-height: 100vh;
+			transform: translateZ(0);
+			background: url("https://images.unsplash.com/photo-1451485435476-a244439c78cd?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjM0MDg1fQ&w=1920") center center / cover no-repeat;
+		}
+
+		/* 提示信息 */
+		.info {
+			width: 220px;
+			height: 40px;
+			background-color: rgba(255, 255, 255, 0.5);
+			position: fixed;
+			left: 50%;
+			top: 20px;
+			transform: translateX(-50%);
+			border-radius: 5px;
+			text-align: center;
+			line-height: 40px;
+			color: rgba(255, 255, 255, 0.8);
+			user-select: none;
+		}
+
+		.v-enter,
+		.v-leave-to {
+			opacity: 0;
+			top: -20px;
+		}
+
+		.v-enter-active,
+		.v-leave-active {
+			transition: all 0.4s ease-in-out;
+		}
+
+		[cloak] {
+			display: none;
+		}
 
 
+		/* 中间搜索框 */
+		.searchBox {
+			width: 60%;
+			min-width: 400px;
+			height: 30vh;
+			margin: 10vh auto 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
 
-        
-        /* 提示信息 */
-        .info {
-            width: 220px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.5);
-            position: fixed;
-            left: 50%;
-            top: 20px;
-            transform: translateX(-50%);
-            border-radius: 5px;
-            text-align: center;
-            line-height: 40px;
-            color: rgba(255, 255, 255, 0.8);
-            user-select: none;
-        }
+		.clock {
+			width: 100%;
+			height: 60px;
+			margin-bottom: 20px;
+			color: rgba(6, 40, 90, 0.6);
+			font-size: 36px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-family: "Monoton";
+		}
 
-        .v-enter,
-        .v-leave-to {
-            opacity: 0;
-            top: -20px;
-        }
+		.clock>p {
+			user-select: none;
+		}
 
-        .v-enter-active,
-        .v-leave-active {
-            transition: all 0.4s ease-in-out;
-        }
+		.inputBox {
+			width: 60%;
+			height: 44px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background-color: rgba(255, 255, 255, 0.5);
+			padding: 0 15px;
+			border-radius: 20px;
+		}
 
-        [cloak] {
-            display: none;
-        }
+		.inputBox>input {
+			background: none;
+			border: none;
+			outline: none;
+			padding: 0 10px 0 0;
+			flex: 1;
+			height: 44px;
+			color: #242323;
+			font-size: 16px;
+		}
 
+		.inputBox>input::placeholder {
+			color: #242323;
+			font-size: 16px;
+		}
 
-        /* 中间搜索框 */
-        .searchBox {
-            width: 60%;
-            min-width: 400px;
-            height: 30vh;
-            margin: 10vh auto 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+		.inputBox>img {
+			width: 1.3rem;
+			height: 1.3rem;
+		}
 
-        .clock {
-            width: 100%;
-            height: 60px;
-            margin-bottom: 20px;
-            color: rgba(6, 40, 90, 0.6);
-            font-size: 36px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: "Monoton";
-        }
+		.inputBox>img:hover {
+			cursor: pointer;
+		}
 
-        .clock>p {
-            user-select: none;
-        }
-
-        .inputBox {
-            width: 60%;
-            height: 44px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.5);
-            padding: 0 15px;
-            border-radius: 20px;
-        }
-
-        .inputBox>input {
-            background: none;
-            border: none;
-            outline: none;
-            padding: 0 10px 0 0;
-            flex: 1;
-            height: 44px;
-            color: #242323;
-            font-size: 16px;
-        }
-
-        .inputBox>input::placeholder {
-            color: #242323;
-            font-size: 16px;
-        }
-
-        .inputBox>img {
-            width: 1.3rem;
-            height: 1.3rem;
-        }
-
-        .inputBox>img:hover {
-            cursor: pointer;
-        }
-
-        table {margin:auto}
-    </style>
+		table {
+			margin: auto
+		}
+	</style>
 </head>
 
 <body>
-    <div id="app"><!----> <section class="searchBox"><div class="clock"><p id="year">2021</p>/
-                <p id="month">10</p>/
-                <p id="day">21</p>--
-                <p id="hour">19:</p> <p id="minute">49:</p> <p id="second">59</p></div> <div class="inputBox"><input type="text" placeholder="Search" id="searchInput"> <img src="./query_files/20200224201617212.png" alt=""></div></section></div>
+	<div id="add">
+		<form action="http://447b097k22.51vip.biz/cgi-bin/add" method="POST">
+			<font color="#ffffff">姓名</font><input type="text" required="required" name="uname">
+			<font color="#ffffff">性别</font><input type="text" required="required" name="usex">
+			<font color="#ffffff">学号</font><input type="text" required="required" name="unumber">
+			<input class="but" type="submit" value="提交">
+		</form>
+
+	</div>
+	<div id="query">
+		<section class="searchBox">
+			<div class="clock">
+				<p id="year">2021</p>/
+				<p id="month">10</p>/
+				<p id="day">21</p>--
+				<p id="hour">19:</p>
+				<p id="minute">49:</p>
+				<p id="second">59</p>
+			</div>
+			<div class="inputBox"><input type="text" placeholder="Search" id="searchInput"> <img
+					src="./query_files/20200224201617212.png" alt=""></div>
+		</section>
+
+		<table border="1" width="880px cellspacing=" 1px"="">
+			<tbody>
+				<tr>
+					<td>姓名</td>
+					<td>性别</td>
+					<td>学号</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 
-<table border="1" width="880px cellspacing=" 1px"="">
-    <tbody><tr>
-        <td>姓名</td> 
-        <td>性别</td>
-        <td>班级</td>
-        <td>学号</td>
-        <td>分数</td>
-        <td>排名</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-</tbody></table>
 
 
-<script>
-    window.onload = function () {
 
-        let year_text = document.getElementById("year");
-        let month_text = document.getElementById("month");
-        let day_text = document.getElementById("day");
-        let hour_text = document.getElementById("hour");
-        let minute_text = document.getElementById("minute");
-        let second_text = document.getElementById("second");
-        let timer = setInterval(function () {
-            let date = new Date();
-            let year = date.getFullYear();
-            let month = date.getMonth();
-            let day = date.getDate();
-            let hour = date.getHours();
-            let minute = date.getMinutes();
-            let second = date.getSeconds();
-            year_text.innerHTML = year;
-            month_text.innerHTML = (month + 1);
-            day_text.innerHTML = day;
-            hour_text.innerHTML = hour + ":";
-            minute_text.innerHTML = minute + ":";
-            second_text.innerHTML = second;
-        }, 100);
+	<script>
+		window.onload = function () {
 
-        let searchInput = document.getElementById("searchInput");
-        searchInput.focus();
-    };
-</script>
-<script src="./query_files/vue.min.js.下载"></script>
-<script>
-    const vm = new Vue({
-        el: "#app",
-        data: {
-            queryString: "",
-            isInfo: false,
-            infoText: "",
-        },
-        mounted() {
-        },
-        methods: {
+			let year_text = document.getElementById("year");
+			let month_text = document.getElementById("month");
+			let day_text = document.getElementById("day");
+			let hour_text = document.getElementById("hour");
+			let minute_text = document.getElementById("minute");
+			let second_text = document.getElementById("second");
+			let timer = setInterval(function () {
+				let date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth();
+				let day = date.getDate();
+				let hour = date.getHours();
+				let minute = date.getMinutes();
+				let second = date.getSeconds();
+				year_text.innerHTML = year;
+				month_text.innerHTML = (month + 1);
+				day_text.innerHTML = day;
+				hour_text.innerHTML = hour + ":";
+				minute_text.innerHTML = minute + ":";
+				second_text.innerHTML = second;
+			}, 100);
 
-            search: function () {
-                if (this.queryString === "") {
-                    this.infoText = "输入的内容不能为空!";
-                    this.isInfo = true;
-                    let that = this;
+			let searchInput = document.getElementById("searchInput");
+			searchInput.focus();
+		};
+	</script>
+	<script src="./query_files/vue.min.js.下载"></script>
+	<script>
+		const vm = new Vue({
+			el: "#app",
+			data: {
+				queryString: "",
+				isInfo: false,
+				infoText: "",
+			},
+			mounted() {},
+			methods: {
 
-                    setTimeout(function () {
-                        that.isInfo = false;
-                    }, 1200);
-                } else {
-                    window.location.href = "http://localhost:8080/cgi-bin/query?id=" + this.queryString;
-                }
-            }
-        },
-    });
-</script>
-<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
-      <div class="xl-chrome-ext-bar__logo"></div>
+				search: function () {
+					if (this.queryString === "") {
+						this.infoText = "输入的内容不能为空!";
+						this.isInfo = true;
+						let that = this;
 
-      <a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option">下载视频</a>
-      <a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
-    </div></body></html>
+						setTimeout(function () {
+							that.isInfo = false;
+						}, 1200);
+					} else {
+						window.location.href = "http://localhost:8080/cgi-bin/query?id=" + this.queryString;
+					}
+				}
+			},
+		});
+	</script>
+	<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
+		<div class="xl-chrome-ext-bar__logo"></div>
+
+		<a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option">下载视频</a>
+		<a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
+	</div>
+</body>
+
+</html>

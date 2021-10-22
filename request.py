@@ -1,8 +1,11 @@
 class HttpRequest():
     # 标头
     def parseRequest(self, requestText):
-
         request = {}
+
+        if requestText == "":
+            return request
+
         # parse http header
         a = requestText.split("\r\n\r\n")
         head = a[0]
@@ -43,5 +46,3 @@ class HttpRequest():
             pass
 
         return request
-        pass
-    pass
