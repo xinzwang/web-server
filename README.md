@@ -53,6 +53,8 @@ web-server  --源码目录
 
 ## 四、 TODO
 
-* [√] 解析POST请求
-* [√] 重构HttpRequest
-* [?] 发送文件支持
+- [x] 解析POST请求
+- [x] 重构HttpRequest
+- [x] 发送文件支持（主要指图片文件）
+- [ ] 支持ssl
+- [ ] 协程异步化

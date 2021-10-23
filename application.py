@@ -80,22 +80,20 @@ class WorkThread(threading.Thread):
 
         # 2.url
         if(request['url'] == '/'):
-                request['url'] = '/index.html'
+            request['url'] = '/index.html'
+        elif(request['url'] == '/favicon.ico'):
+            request['url'] = '/pic/favicon.ico'
         url = request['url']
 
         # 3.method
         responseText = ""
         if request['method'] == "GET":
-            if(request['url'] == '/favicon.ico'):
+            try:
+                response.setCode(200)
+                response.setData_From_Url(WEB_ROOT+url)
+            except Exception:
                 response.setCode(404)
                 response.setData_From_Url(WEB_ROOT+"/404.html")
-            else:
-                try:
-                    response.setCode(200)
-                    response.setData_From_Url(WEB_ROOT+url)
-                except Exception:
-                    response.setCode(404)
-                    response.setData_From_Url(WEB_ROOT+"/404.html")
         elif request['method'] == "POST":
             if url[0:8] == "/cgi-bin":
                 appName = url.split("/")[2]
