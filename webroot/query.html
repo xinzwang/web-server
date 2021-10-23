@@ -132,127 +132,108 @@
 </head>
 
 <body>
-	<div id="add">
-		<form action="http://447b097k22.51vip.biz/cgi-bin/add" method="POST">
-			<font color="#ffffff">姓名</font><input type="text" required="required" name="uname">
-			<font color="#ffffff">性别</font><input type="text" required="required" name="usex">
-			<font color="#ffffff">学号</font><input type="text" required="required" name="unumber">
-			<input class="but" type="submit" value="提交">
-		</form>
+	<div>
+		<div id="add">
+			<label>姓名</label><input v-model='uname' required="required">
+			<label>性别</label><input v-model='usex' required="required">
+			<label>学号</label><input v-model='unumber' required="required">
+			<el-button @click="submit" round>提交</el-button>
+		</div>
+		<div id="query">
+			<section class="searchBox">
+				<div class="clock">
+					<p id="year">2021</p>/
+					<p id="month">10</p>/
+					<p id="day">21</p>--
+					<p id="hour">19:</p>
+					<p id="minute">49:</p>
+					<p id="second">59</p>
+				</div>
+				<div class="inputBox"><input type="text" placeholder="Search" id="searchInput"> <img
+						src="./query_files/20200224201617212.png" alt=""></div>
+			</section>
 
-	</div>
-	<div id="query">
-		<section class="searchBox">
-			<div class="clock">
-				<p id="year">2021</p>/
-				<p id="month">10</p>/
-				<p id="day">21</p>--
-				<p id="hour">19:</p>
-				<p id="minute">49:</p>
-				<p id="second">59</p>
-			</div>
-			<div class="inputBox"><input type="text" placeholder="Search" id="searchInput"> <img
-					src="./query_files/20200224201617212.png" alt=""></div>
-		</section>
+			<template>
+				<el-table :data="tableData" stripe stype="width:100%">
+					<el-table-column prop="uname" label="姓名" width="180">
+					</el-table-column>
+					<el-table-column prop="usex" label="性别" width="180">
+					</el-table-column>
+					<el-table-column prop="unumber" label="学号">
+					</el-table-column>
+				</el-table>
 
-		<table border="1" width="880px cellspacing=" 1px"="">
-			<tbody>
-				<tr>
-					<td>姓名</td>
-					<td>性别</td>
-					<td>学号</td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-
-
-
-
-
-	<script>
-		window.onload = function () {
-
-			let year_text = document.getElementById("year");
-			let month_text = document.getElementById("month");
-			let day_text = document.getElementById("day");
-			let hour_text = document.getElementById("hour");
-			let minute_text = document.getElementById("minute");
-			let second_text = document.getElementById("second");
-			let timer = setInterval(function () {
-				let date = new Date();
-				let year = date.getFullYear();
-				let month = date.getMonth();
-				let day = date.getDate();
-				let hour = date.getHours();
-				let minute = date.getMinutes();
-				let second = date.getSeconds();
-				year_text.innerHTML = year;
-				month_text.innerHTML = (month + 1);
-				day_text.innerHTML = day;
-				hour_text.innerHTML = hour + ":";
-				minute_text.innerHTML = minute + ":";
-				second_text.innerHTML = second;
-			}, 100);
-
-			let searchInput = document.getElementById("searchInput");
-			searchInput.focus();
-		};
-	</script>
-	<script src="./query_files/vue.min.js"></script>
-	<script>
-		const vm = new Vue({
-			el: "#app",
-			data: {
-				queryString: "",
-				isInfo: false,
-				infoText: "",
-			},
-			mounted() {},
-			methods: {
-
-				search: function () {
-					if (this.queryString === "") {
-						this.infoText = "输入的内容不能为空!";
-						this.isInfo = true;
-						let that = this;
-
-						setTimeout(function () {
-							that.isInfo = false;
-						}, 1200);
-					} else {
-						window.location.href = "http://localhost:8080/cgi-bin/query?id=" + this.queryString;
-					}
-				}
-			},
-		});
-	</script>
-	<div class="xl-chrome-ext-bar" id="xl_chrome_ext_{4DB361DE-01F7-4376-B494-639E489D19ED}" style="display: none;">
-		<div class="xl-chrome-ext-bar__logo"></div>
-
-		<a id="xl_chrome_ext_download" href="javascript:;" class="xl-chrome-ext-bar__option">下载视频</a>
-		<a id="xl_chrome_ext_close" href="javascript:;" class="xl-chrome-ext-bar__close"></a>
+			</template>
+		</div>
 	</div>
 </body>
 
 </html>
+
+
+
+<script src="./query_files/vue.min.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script>
+	window.onload = function () {
+
+		let year_text = document.getElementById("year");
+		let month_text = document.getElementById("month");
+		let day_text = document.getElementById("day");
+		let hour_text = document.getElementById("hour");
+		let minute_text = document.getElementById("minute");
+		let second_text = document.getElementById("second");
+		let timer = setInterval(function () {
+			let date = new Date();
+			let year = date.getFullYear();
+			let month = date.getMonth();
+			let day = date.getDate();
+			let hour = date.getHours();
+			let minute = date.getMinutes();
+			let second = date.getSeconds();
+			year_text.innerHTML = year;
+			month_text.innerHTML = (month + 1);
+			day_text.innerHTML = day;
+			hour_text.innerHTML = hour + ":";
+			minute_text.innerHTML = minute + ":";
+			second_text.innerHTML = second;
+		}, 100);
+
+		let searchInput = document.getElementById("searchInput");
+		searchInput.focus();
+	};
+</script>
+<script>
+	const vm = new Vue({
+		el: "#app",
+		data: {
+			queryString: "",
+			isInfo: false,
+			infoText: "",
+			tableData: []
+		},
+		mounted() {},
+		methods: {
+			submit: function () {
+
+			},
+			search: function () {
+				if (this.queryString === "") {
+					window.confirm("请输入学号")
+				} else {
+					let k = this
+					axios({
+						method: 'post',
+						url: '/cgi-bin/calculator',
+						dataType: 'json',
+						data: this.submit_data
+					}).then(function (response) {
+						k.result = response.data.res;
+					})
+				}
+			}
+		},
+	});
+</script>
