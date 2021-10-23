@@ -15,7 +15,7 @@ LOG_ROOT = "./webroot/log"
 
 class WSGIServer():
 
-    def __init__(self, host='localhost', port=8888, connectSize=100):
+    def __init__(self, host='0.0.0.0', port=8888, connectSize=100):
         '''
         :param port: 服务器的端口号
         :param connectSize: 默认的并发数量
@@ -50,7 +50,6 @@ class WSGIServer():
             if server:
                 server.close()
         pass
-
     pass
 
 
@@ -80,21 +79,21 @@ class WorkThread(threading.Thread):
             return
 
         # 2.url
+        if(request['url'] == '/'):
+            request['url'] = '/index.html'
+        elif(request['url'] == '/favicon.ico'):
+            request['url'] = '/pic/favicon.ico'
         url = request['url']
 
         # 3.method
         responseText = ""
         if request['method'] == "GET":
-            if(request['url'] == '/favicon.ico'):
+            try:
+                response.setCode(200)
+                response.setData_From_Url(WEB_ROOT+url)
+            except Exception:
                 response.setCode(404)
                 response.setData_From_Url(WEB_ROOT+"/404.html")
-            else:
-                try:
-                    response.setCode(200)
-                    response.setData_From_Url(WEB_ROOT+url)
-                except Exception:
-                    response.setCode(404)
-                    response.setData_From_Url(WEB_ROOT+"/404.html")
         elif request['method'] == "POST":
             if url[0:8] == "/cgi-bin":
                 appName = url.split("/")[2]

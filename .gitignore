@@ -5,3 +5,4 @@
 !.vscode/extensions.json
 test.py
 __pycache__
+*.log
