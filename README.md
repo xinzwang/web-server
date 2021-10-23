@@ -6,7 +6,7 @@
 
 2. 网站的所有资源放在webroot文件夹下
 
-3. 服务器的工作代码是茛目录下的几个.py文件
+3. 服务器的工作代码是主目录下的几个.py文件
 
 ```
 web-server  --源码目录
@@ -20,10 +20,10 @@ web-server  --源码目录
 ├─ README.md
 │      
 └─webroot  -- 网站根目录
-   ├─ 404.html        -- 默认网页 找不到对应资源
-   ├─ ERROR.html      -- 默认网页 出现错误
+   ├─ 404.html        -- 404默认网页 找不到对应资源
+   ├─ ERROR.html      -- 出现错误的默认网页
    ├─ index.html      -- 一个网页
-   ├─ calculator.html -- 一个网页
+   ├─ calculator.html -- calculator.py对应的网页
    ├─ query.html      -- 一个网页
    │  
    ├─cgi-bin -- cgi程序
@@ -32,7 +32,11 @@ web-server  --源码目录
    │   └─ test.py
    │      
    └─log  --日志文件夹
-       └─ 2021-10-18.log
+   │   └─ 2021-10-18.log
+   └─pic  --图片资源存放文件夹
+       └─ lulu.png 		-- png图片测试文件
+       └─ god.jpg  		-- jpg图片测试文件
+       └─ favicon.ico 	-- 默认favicon文件
 ```
 
 ## 二、使用说明
