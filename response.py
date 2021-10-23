@@ -2,7 +2,7 @@ class HttpResponse():
     conn = None
     code = 404
     data = ""
-    data_type=""
+    data_type = ""
 
     def __init__(self, conn):
         self.conn = conn
@@ -17,14 +17,14 @@ class HttpResponse():
         with open(url, 'rb') as fp:
             body = fp.read()
         self.data = body
-        if(url[-4:]=='.jpg'):
-            self.data_type='image/jpeg'
-        elif (url[-4:]=='.png'):
-            self.data_type='image/png'
-        elif (url[-4:]=='.ico'):
-            self.data_type='image/x-icon'
+        if(url[-4:] == '.jpg'):
+            self.data_type = 'image/jpeg'
+        elif (url[-4:] == '.png'):
+            self.data_type = 'image/png'
+        elif (url[-4:] == '.ico'):
+            self.data_type = 'image/x-icon'
         else:
-            self.data_type='text/html'
+            self.data_type = 'text/html'
         return body
 
     def response(self):

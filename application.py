@@ -113,7 +113,7 @@ class WorkThread(threading.Thread):
                 print(stderr)
 
                 response.setCode(200)
-                response.setData(stdout.decode('utf-8'))
+                response.setData(stdout)
             else:
                 response.setCode(404)
                 response.setData_From_Url(WEB_ROOT+"/404.html")
