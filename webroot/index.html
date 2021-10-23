@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage of Jia Yuhan</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/about.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.css">
+    <link rel="stylesheet" type="text/css" href="css/des.css">
+    <link rel="stylesheet" type="text/css" href="css/course.css">
+    <link rel="stylesheet" type="text/css" href="css/fav.css">
+    <link rel="stylesheet" type="text/css" href="css/mood.css">
+</head>
+<body>
+    <div class="nav">
+        <div class="container">
+            <a href="#" onclick="goto('0')" id="nav0">home</a>
+            <a href="#" onclick="goto('1')" id="nav1">description</a>
+            <a href="#" onclick="goto('2')" id="nav2">courses</a>
+            <a href="#" onclick="goto('3')" id="nav3">favorite</a>
+            <a href="#" onclick="goto('4')" id="nav4">mood</a>
+            <a href="#" onclick="goto('5')" id="nav5">link</a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="about" id="0">
+            <p class="header animated fadeInLeft">ABOUT JYH</p>
+            <div class="line animated fadeInLeft"></div>
+            <p class="intro animated flipInX">This is the home page of JYH, learn more about me, click the link below</p>
+            <div class="line animated fadeInRight"></div>
+            <a href="#" class="animated fadeInRight" onclick="goto('1')">Get Started >></a>.
+            <a href="Question.asp"  class="animated fadeInRight" name="Start">Start Test>></a>
+        </div>
+        <div class="des" id="1">
+            <p class="header animated fadeInLeft">DESCRIPTION</p>
+            <div class="line1 animated fadeInLeft"></div>
+            <p class="des1 animated fadeInRight">JYH is very   <span>Free, vivid, lively, joyful.</span></p>
+            <p class="des1 animated fadeInLeft">JYH like to <span>sing, dance, rap, play basketball.</span></p>
+            <a class="next animated fadeInRight" onclick="goto('2')">next >></a>
+        </div>
+        <div class="course" id="2">
+            <p class="header animated fadeInLeft">COURSES</p>
+            <ul class="animated flipInX">
+                <li>Web Development by Shi Chongyang</li>
+                <li>Programing Basic by Wu Yuwei</li>
+                <li>numeric analysis</li>
+                <li>physics</li>
+                <li>PE</li>
+                <li>physics experiment</li>
+            </ul>
+            <a class="next animated fadeInRight" onclick="goto('3')">next >></a>
+        </div>
+        <div class="fav" id="3">
+            <p class="header animated fadeInLeft">FAVORITES</p>
+            <ul class="animated flipInX">
+                <li>
+                    Sleepy Hollow
+                    (<a href="https://movie.douban.com/subject/1296078/">douban</a>)(<a href= "https://www.imdb.com/title/tt0162661/?ref_=nv_sr_1?ref_=nv_sr_1">IMDb</a>)
+                </li>
+                <li>
+                    ハウルの動く城
+                    (<a href="https://movie.douban.com/subject/1308807/">douban</a>)(<a href="https://www.rijutv.com/dianying/4897.html">日本のドラマTV</a>)
+                </li>
+                <li>
+                    海辺のカフカ
+                    (<a href="https://book.douban.com/subject/1059419/">douban</a>)(<a href="https://zh.wikipedia.org/wiki/%E6%9D%91%E4%B8%8A%E6%98%A5%E6%A8%B9">村上春树</a>)
+                </li>
+            </ul>
+            <a class="next animated fadeInRight" onclick="goto('4')">next >></a>
+        </div>
+        <div class="mood" id="4">
+            <p class="header animated fadeInLeft">MOODS</p>
+            <div class="happy animated flipInX">
+                <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1565062683&di=bd843a998cc210755e118c6b47d6f5f2&src=http://b-ssl.duitang.com/uploads/item/201511/15/20151115204601_ikQJh.jpeg" alt="开心的小埋"  width="150px" height="150px">
+                <p class="animated fadeInRight">when I am happy</p>
+            </div>
+            <div class="line1"></div>
+            <div class="sad animated flipInX">
+                <img src="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=0d526ccfb5096b63951456026d5aec21/bd3eb13533fa828ba10a3603f61f4134970a5a20.jpg" alt="并不开心的神仓社长" width="150px" height="150px">
+                <p class="animated fadeInRight">when I am not happy</p>
+            </div>
+            <a class="next animated fadeInRight" onclick="goto('5')">next >></a>
+        </div>
+        <div class="link animated fadeInRight" id="5">
+          <blockquote>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>FRIENDS<a href="http://10.195.124.218:8060/">SZY</a> </p>
+          </blockquote>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+
+</body>
+</html>
