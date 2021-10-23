@@ -23,6 +23,8 @@ class HttpResponse():
             self.data_type = 'image/png'
         elif (url[-4:] == '.ico'):
             self.data_type = 'image/x-icon'
+        elif(url[-4:] == '.css'):
+            self.data_type = 'text/css'
         else:
             self.data_type = 'text/html'
         return body
