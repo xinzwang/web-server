@@ -145,25 +145,26 @@
 			<p id="second">59</p>
 		</div>
 		<div>
-			<label>姓名</label><input v-model='submit_data.uname' required="required">
-			<label>性别</label><input v-model='submit_data.usex' required="required">
 			<label>学号</label><input v-model='submit_data.unumber' required="required">
+			<label>姓名</label><input v-model='submit_data.uname' required="required">
+			<label>班级</label><input v-model='submit_data.uclass' required="required">
 			<el-button @click="submit" round>提交</el-button>
 		</div>
 		<div>
 			<div>
-				<el-input v-model="search_data.ustr" placeholder="请输入内容" clearable style="width: 400px;"></el-input>
+				<el-input v-model="search_data.ustr" placeholder="请输入学号" clearable style="width: 400px;"></el-input>
 				<el-button @click="search" round>搜索</el-button>
 			</div>
 
 			<template>
 				<el-table :data="table_data" stripe stype="width:100%">
-					<el-table-column prop="uname" label="姓名" width="180">
-					</el-table-column>
-					<el-table-column prop="usex" label="性别" width="180">
-					</el-table-column>
 					<el-table-column prop="unumber" label="学号">
 					</el-table-column>
+					<el-table-column prop="uname" label="姓名" width="180">
+					</el-table-column>
+					<el-table-column prop="uclass" label="班级" width="180">
+					</el-table-column>
+
 				</el-table>
 
 			</template>
@@ -210,7 +211,7 @@
 		data: {
 			submit_data: {
 				uname: null,
-				usex: null,
+				uclass: null,
 				unumber: null
 			},
 			search_data: {
@@ -218,15 +219,15 @@
 			},
 			table_data: [{
 				uname: "测试1",
-				usex: "测试1",
+				uclass: "测试1",
 				unumber: "测试1"
 			}, {
 				uname: "测试1",
-				usex: "测试1",
+				uclass: "测试1",
 				unumber: "测试1"
 			}, {
 				uname: "测试1",
-				usex: "测试1",
+				uclass: "测试1",
 				unumber: "测试1"
 			}]
 		},
@@ -234,7 +235,7 @@
 		methods: {
 			submit: function () {
 				if (this.submit_data.uname == null ||
-					this.submit_data.usex == null ||
+					this.submit_data.uclass == null ||
 					this.submit_data.unumber == null) {
 					this.$message.error('请输入信息');
 				} else {
@@ -247,7 +248,7 @@
 					}).then(function (response) {
 						if (response.data.msg == "success") {
 							this.$message({
-								message: '恭喜你，这是一条成功消息',
+								message: '提交成功',
 								type: 'success'
 							});
 						}
@@ -256,18 +257,19 @@
 			},
 			search: function () {
 				if (this.search_data.ustr == null) {
-					this.$message.error('请输入搜索关键字');
-				} else {
-					let k = this
-					axios({
-						method: 'post',
-						url: '/cgi-bin/query_search',
-						dataType: 'json',
-						data: this.search_data
-					}).then(function (response) {
-						k.table_data = response.data.table_data
-					})
+					this.search_data.ustr = ""
 				}
+
+				let k = this
+				axios({
+					method: 'post',
+					url: '/cgi-bin/query_search',
+					dataType: 'json',
+					data: this.search_data
+				}).then(function (response) {
+					k.table_data = response.data.table_data
+				})
+
 			}
 
 		},
