@@ -1,0 +1,49 @@
+.content .about
+{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content .about p.header
+{
+    color: white;
+    font-size: 1.8em;
+    text-align: center;
+    background-color: #3e315d;
+    margin-top: 100px;
+    margin-bottom: 30px;
+}
+
+.content .about p.intro
+{
+    color: white;
+    font-size: 1em;
+    text-align: center;
+}
+
+.content .about a
+{
+    color: white;
+    font-size: 1.1em;
+    text-align: center;
+    background-color: #3e315d;
+    transition: 300ms;
+    margin-top: 50px;
+}
+
+.content .about a:hover
+{
+    color: #3e315d;
+    background-color: white;
+    cursor: pointer;
+}
+
+.content .about .line
+{
+    background-color: white;
+    height: 2px;
+    margin: 10px 0;
+    width: 300px;
+}

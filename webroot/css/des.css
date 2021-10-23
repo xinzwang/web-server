@@ -1,0 +1,55 @@
+.des
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.des p.header
+{
+    font-size: 1.8em;
+    color: white;
+    background-color: #3e315d;
+    margin-top: 50px;
+}
+
+.des .line1
+{
+    height: 2px;
+    width: 300px;
+    background-color: white;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.des .des1
+{
+    border-left: 2px solid white;
+    width: 100%;
+    text-align: center;
+    padding: 0 10px;
+    margin: 10px 0;
+}
+
+.des span
+{
+    color: coral;
+    background-color: #3e315d;
+}
+
+.des .next
+{
+    color: white;
+    font-size: 1.1em;
+    text-align: center;
+    background-color: #3e315d;
+    transition: 300ms;
+    margin-top: 50px;
+}
+
+.des .next:hover
+{
+    color: #3e315d;
+    background-color: white;
+    cursor: pointer;
+}

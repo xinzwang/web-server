@@ -1,0 +1,47 @@
+.fav
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+}
+
+.fav .header
+{
+    font-size: 1.8em;
+    color: white;
+    background-color: #3e315d;
+    margin-top: 50px;
+}
+
+.fav ul
+{
+    list-style-type: none;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.fav li
+{
+    margin: 10px 0;
+    width: 100%;
+    border-left: 2px solid white;
+    text-align: center;
+}
+
+.fav .next
+{
+    color: white;
+    font-size: 1.1em;
+    text-align: center;
+    background-color: #3e315d;
+    transition: 300ms;
+    margin-top: 50px;
+}
+
+.fav .next:hover
+{
+    color: #3e315d;
+    background-color: white;
+    cursor: pointer;
+}

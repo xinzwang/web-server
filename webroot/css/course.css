@@ -1,0 +1,53 @@
+.course
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+}
+
+.course .header
+{
+    font-size: 1.8em;
+    color: white;
+    background-color: #3e315d;
+    margin-top: 50px;
+}
+
+.course ul
+{
+    list-style-type: none;
+    padding-top: 50px;
+    width: 100%;
+}
+
+.course li
+{
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+    border-left: 2px solid white;
+    transition: 300ms;
+}
+
+.course li:hover
+{
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, .5);
+}
+
+.course .next
+{
+    color: white;
+    font-size: 1.1em;
+    text-align: center;
+    background-color: #3e315d;
+    transition: 300ms;
+    margin-top: 50px;
+}
+
+.course .next:hover
+{
+    color: #3e315d;
+    background-color: white;
+    cursor: pointer;
+}

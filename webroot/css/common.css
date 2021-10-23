@@ -1,0 +1,53 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+
+    font-family: "consolas";
+}
+
+a
+{
+    text-decoration: none;
+    padding: 0 10px;
+}
+
+html
+{
+    background-image: url("../assets/back.jpg");
+    background-size: cover;
+}
+
+.nav
+{
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.nav a
+{
+    font-size: 1.1em;
+    padding: 0 15px;
+    color: white;
+    transition: 300ms;
+}
+
+.nav a:hover
+{
+    color: #3e315d;
+}
+
+.content
+{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    height: 500px;
+}
+
+p
+{
+    padding: 0 10px;
+}
