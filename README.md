@@ -18,7 +18,10 @@ web-server  --源码目录
 ├─ .gitignore
 ├─ LICENSE
 ├─ README.md
-│      
+|
+├─db -- 数据库文件
+│  └─ student.sql
+|
 └─webroot  -- 网站根目录
    ├─ 404.html        -- 404默认网页 找不到对应资源
    ├─ ERROR.html      -- 出现错误的默认网页
@@ -31,7 +34,7 @@ web-server  --源码目录
    │   ├─ query.py
    │   └─ test.py
    │      
-   └─log  --日志文件夹
+   ├─log  --日志文件夹
    │   └─ 2021-10-18.log
    └─pic  --图片资源存放文件夹
        └─ lulu.png 		-- png图片测试文件
