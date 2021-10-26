@@ -145,13 +145,13 @@
 			<p id="second">59</p>
 		</div>
 		<div>
-			<label>学号</label><input v-model='submit_data.unumber' required="required">
-			<label>姓名</label><input v-model='submit_data.uname' required="required">
-			<label>班级</label><input v-model='submit_data.uclass' required="required">
+			<label>学号</label><el-input v-model='submit_data.unumber' required="required" clearable style="width: 150px; margin-right: 20px; margin-left: 5px;"></el-input>
+			<label>姓名</label><el-input v-model='submit_data.uname' required="required" clearable style="width: 150px; margin-right: 20px; margin-left: 5px;"></el-input>
+			<label>班级</label><el-input v-model='submit_data.uclass' required="required" clearable style="width: 150px; margin-right: 20px; margin-left: 5px;"></el-input>
 			<el-button @click="submit" round>提交</el-button>
 		</div>
 		<div>
-			<div>
+			<div style="margin-bottom: 15px; margin-top: 10px;">
 				<el-input v-model="search_data.ustr" placeholder="请输入学号" clearable style="width: 400px;"></el-input>
 				<el-button @click="search" round>搜索</el-button>
 			</div>
