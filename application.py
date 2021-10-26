@@ -1,6 +1,7 @@
 import time
 import socket
 import threading
+import ssl
 from subprocess import Popen, PIPE
 
 from response import HttpResponse
@@ -15,7 +16,7 @@ LOG_ROOT = "./webroot/log"
 
 class WSGIServer():
 
-    def __init__(self, host='0.0.0.0', port=8888, connectSize=100):
+    def __init__(self, host='0.0.0.0', port=443, connectSize=100):
         '''
         :param port: 服务器的端口号
         :param connectSize: 默认的并发数量
@@ -25,6 +26,14 @@ class WSGIServer():
         self.__connectSize = connectSize
         pass
 
+    def load_cert_chain(self,certfile,keyfile):
+        '''
+        :certfile: 证书公钥
+        :keyfile: 证书私钥
+        '''
+        self.__context=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        self.__context.load_cert_chain(certfile,keyfile)
+
     def startServer(self):
         '''
         服务启动主程序
@@ -33,19 +42,23 @@ class WSGIServer():
         server = None
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            # server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server.bind((self.__host, self.__port))
             server.listen(self.__connectSize)
-            print("======服务器启动成功：http://" +
-                  self.__host + ":" + str(self.__port)+"======")
-            while True:
-                clientConn, clientAddr = server.accept()  # 等待客户端请求
-                # 启动独立的线程，处理每一次用户请求
-                wt = WorkThread(clientConn, clientAddr)
-                wt.start()
-                pass
-        except socket.gaierror as g:
-            print(g)
+
+            with self.__context.wrap_socket(server,server_side=True) as ssl_server:
+                print("======服务器启动成功：https://" +
+                    self.__host + ":" + str(self.__port)+"======")
+                while True:
+                    try:
+                        clientConn, clientAddr = ssl_server.accept()  # 等待客户端请求
+                        # 启动独立的线程，处理每一次用户请求
+                        wt = WorkThread(clientConn, clientAddr)
+                        wt.start()
+                    except Exception:
+                        pass
+        except Exception as e:
+            print(str(e.args))
         finally:
             if server:
                 server.close()
