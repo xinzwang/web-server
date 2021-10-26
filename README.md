@@ -62,7 +62,7 @@ web-server  --源码目录
 
 1. 运行命令：python server.py
 
-2. 使用浏览器访问：[localhost:8888/index.html](localhost:8888/index.html)
+2. 使用浏览器访问：[https://localhost/](https://localhost/)
 
 ## 三、分工
 
@@ -77,5 +77,5 @@ web-server  --源码目录
 * [x] 解析POST请求
 * [x] 重构HttpRequest
 * [x] 发送文件支持（主要指图片文件）
-* [ ] 支持ssl
+* [x] 支持ssl
 * [ ] 协程异步化
