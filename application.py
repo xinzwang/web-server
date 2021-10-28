@@ -2,6 +2,8 @@ import time
 import socket
 import threading
 import ssl
+import asyncio
+
 from subprocess import Popen, PIPE
 
 from response import HttpResponse
@@ -34,9 +36,9 @@ class WSGIServer():
         self.__context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         self.__context.load_cert_chain(certfile, keyfile)
 
-    def startServer(self):
+    async def __server(self):
         '''
-        服务启动主程序
+        服务的主要实现
         :return:
         '''
         server = None
@@ -53,8 +55,11 @@ class WSGIServer():
                     try:
                         clientConn, clientAddr = ssl_server.accept()  # 等待客户端请求
                         # 启动独立的线程，处理每一次用户请求
-                        wt = WorkThread(clientConn, clientAddr)
-                        wt.start()
+                        wt = WorkCoroutine(clientConn, clientAddr)
+                        asyncio.ensure_future(wt.handle())
+                        # 交出执行权！！
+                        await asyncio.sleep(0)
+                        print('handle a client')
                     except Exception:
                         pass
         except Exception as e:
@@ -62,81 +67,88 @@ class WSGIServer():
         finally:
             if server:
                 server.close()
-        pass
-    pass
+
+    def startServer(self):
+        '''
+        启动异步服务
+        :return:
+        '''
+        asyncio.run(self.__server())
 
 
-class WorkThread(threading.Thread):
+class WorkCoroutine:
     def __init__(self, connection, addr, bufferSize=8096):
-        threading.Thread.__init__(self)
         self.__connection = connection
         self.__addr = addr
         self.__bufferSize = bufferSize
         pass
 
-    def run(self):
-        # 1.解析请求
-        receiveMsg = self.__connection.recv(self.__bufferSize)
-        receiveMsg = receiveMsg.decode("utf-8")
+    async def handle(self):
+        try:
+            # 1.解析请求
+            receiveMsg = self.__connection.recv(self.__bufferSize)
+            receiveMsg = receiveMsg.decode("utf-8")
 
-        self.log(self.__addr, receiveMsg)  # 记录日志
-        print(receiveMsg)
+            self.log(self.__addr, receiveMsg)  # 记录日志
+            print(receiveMsg)
 
-        request = HttpRequest()
-        request = request.parseRequest(receiveMsg)
-        response = HttpResponse(self.__connection)
-        if request == {}:
-            response.setCode(404)
-            response.setData_From_Url(WEB_ROOT+"/404.html")
-            response.response()
-            return
-
-        # 2.url
-        if(request['url'] == '/'):
-            request['url'] = '/index.html'
-        elif(request['url'] == '/favicon.ico'):
-            request['url'] = '/pic/favicon.ico'
-        url = request['url']
-
-        # 3.method
-        responseText = ""
-        if request['method'] == "GET":
-            try:
-                response.setCode(200)
-                response.setData_From_Url(WEB_ROOT+url)
-            except Exception:
+            request = HttpRequest()
+            request = request.parseRequest(receiveMsg)
+            response = HttpResponse(self.__connection)
+            if request == {}:
                 response.setCode(404)
                 response.setData_From_Url(WEB_ROOT+"/404.html")
-        elif request['method'] == "POST":
-            if url[0:8] == "/cgi-bin":
-                appName = url.split("/")[2]
+                response.response()
+                return
 
-                argvList = []
-                for k in request['params']:
-                    argvList.append(request['params'][k])
+            # 2.url
+            if(request['url'] == '/'):
+                request['url'] = '/index.html'
+            elif(request['url'] == '/favicon.ico'):
+                request['url'] = '/pic/favicon.ico'
+            url = request['url']
 
-                cmd = ["python", WEB_ROOT+"/cgi-bin/{}.py".format(appName)]
-                for a in argvList:
-                    cmd.append(a)
-                cmd.append(request['body'])
+            # 3.method
+            responseText = ""
+            if request['method'] == "GET":
+                try:
+                    response.setCode(200)
+                    response.setData_From_Url(WEB_ROOT+url)
+                except Exception:
+                    response.setCode(404)
+                    response.setData_From_Url(WEB_ROOT+"/404.html")
+            elif request['method'] == "POST":
+                if url[0:8] == "/cgi-bin":
+                    appName = url.split("/")[2]
 
-                process = Popen(cmd, stdout=PIPE, stderr=PIPE)
-                stdout, stderr = process.communicate()
-                print(stdout)
-                print(stderr)
+                    argvList = []
+                    for k in request['params']:
+                        argvList.append(request['params'][k])
 
-                response.setCode(200)
-                response.setData(stdout)
+                    cmd = ["python", WEB_ROOT+"/cgi-bin/{}.py".format(appName)]
+                    for a in argvList:
+                        cmd.append(a)
+                    cmd.append(request['body'])
+
+                    process = Popen(cmd, stdout=PIPE, stderr=PIPE)
+                    stdout, stderr = process.communicate()
+                    print(stdout)
+                    print(stderr)
+
+                    response.setCode(200)
+                    response.setData(stdout)
+                else:
+                    response.setCode(404)
+                    response.setData_From_Url(WEB_ROOT+"/404.html")
+            elif request['method'] == "HEAD":
+                pass
             else:
-                response.setCode(404)
-                response.setData_From_Url(WEB_ROOT+"/404.html")
-        elif request['method'] == "HEAD":
-            pass
-        else:
-            pass
+                pass
 
-        # 4.response
-        response.response()
+            # 4.response
+            response.response()
+        except Exception as e:
+            print(str(e.args))
 
     def log(self, addr, data):
         date = time.strftime("%Y-%m-%d")
