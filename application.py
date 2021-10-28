@@ -26,13 +26,13 @@ class WSGIServer():
         self.__connectSize = connectSize
         pass
 
-    def load_cert_chain(self,certfile,keyfile):
+    def load_cert_chain(self, certfile, keyfile):
         '''
         :certfile: 证书公钥
         :keyfile: 证书私钥
         '''
-        self.__context=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        self.__context.load_cert_chain(certfile,keyfile)
+        self.__context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        self.__context.load_cert_chain(certfile, keyfile)
 
     def startServer(self):
         '''
@@ -46,9 +46,9 @@ class WSGIServer():
             server.bind((self.__host, self.__port))
             server.listen(self.__connectSize)
 
-            with self.__context.wrap_socket(server,server_side=True) as ssl_server:
+            with self.__context.wrap_socket(server, server_side=True) as ssl_server:
                 print("======服务器启动成功：https://" +
-                    self.__host + ":" + str(self.__port)+"======")
+                      self.__host + ":" + str(self.__port)+"======")
                 while True:
                     try:
                         clientConn, clientAddr = ssl_server.accept()  # 等待客户端请求
