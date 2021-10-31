@@ -15,10 +15,13 @@ from request import HttpRequest
 WEB_ROOT = "./webroot"
 LOG_ROOT = "./webroot/log"
 
+connectNum = 0
+lock = threading.Lock()
+
 
 class WSGIServer():
 
-    def __init__(self, host='0.0.0.0', port=443, connectSize=100):
+    def __init__(self, host='0.0.0.0', port=14001, connectSize=10, enable_https=False):
         '''
         :param port: 服务器的端口号
         :param connectSize: 默认的并发数量
@@ -26,6 +29,10 @@ class WSGIServer():
         self.__host = host
         self.__port = port
         self.__connectSize = connectSize
+        self.enable_https = enable_https
+        if enable_https:
+            self.load_cert_chain(certfile='./webroot/cert/server.crt',
+                                 keyfile='./webroot/cert/server_nopass.key')
         pass
 
     def load_cert_chain(self, certfile, keyfile):
@@ -37,6 +44,8 @@ class WSGIServer():
         self.__context.load_cert_chain(certfile, keyfile)
 
     async def __server(self):
+        global connectNum
+        global lock
         '''
         服务的主要实现
         :return:
@@ -47,21 +56,54 @@ class WSGIServer():
             # server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server.bind((self.__host, self.__port))
             server.listen(self.__connectSize)
+            print("======服务器启动成功：https://" +
+                  self.__host + ":" + str(self.__port)+"======")
 
-            with self.__context.wrap_socket(server, server_side=True) as ssl_server:
-                print("======服务器启动成功：https://" +
-                      self.__host + ":" + str(self.__port)+"======")
+            if self.enable_https:
+                with self.__context.wrap_socket(server, server_side=True) as ssl_server:
+                    while True:
+                        try:
+                            if connectNum < self.__connectSize:
+                                clientConn, clientAddr = ssl_server.accept()  # 等待客户端请求
+                                # 启动独立的线程，处理每一次用户请求
+                                wt = WorkCoroutine(clientConn, clientAddr)
+                                asyncio.ensure_future(wt.handle())
+                                # 交出执行权！！
+                                await asyncio.sleep(0)
+                                print('handle a client. connect number:',
+                                      connectNum)
+                            else:
+                                clientConn, clientAddr = ssl_server.accept()  # 等待客户端请求
+                                # 启动独立的线程，处理每一次用户请求
+                                wt = WorkCoroutine(clientConn, clientAddr)
+                                asyncio.ensure_future(wt.handle("Full"))
+                                # 交出执行权！！
+                                await asyncio.sleep(0)
+                                print(
+                                    'client list full. connect number:', connectNum)
+                        except Exception:
+                            pass
+            else:
                 while True:
-                    try:
-                        clientConn, clientAddr = ssl_server.accept()  # 等待客户端请求
+                    clientConn, clientAddr = server.accept()
+                    lock.acquire()
+                    connectNum += 1
+                    lock.release()
+                    if connectNum < self.__connectSize:
                         # 启动独立的线程，处理每一次用户请求
                         wt = WorkCoroutine(clientConn, clientAddr)
                         asyncio.ensure_future(wt.handle())
                         # 交出执行权！！
                         await asyncio.sleep(0)
-                        print('handle a client')
-                    except Exception:
-                        pass
+                        print('handle a client. connect number:', connectNum)
+                    else:
+                        # 达到最大协程数
+                        wt = WorkCoroutine(clientConn, clientAddr)
+                        asyncio.ensure_future(wt.handle("Full"))
+                        # 交出执行权！！
+                        await asyncio.sleep(0)
+                        print('client list full. connect number:', connectNum)
+
         except Exception as e:
             print(str(e.args))
         finally:
@@ -83,7 +125,9 @@ class WorkCoroutine:
         self.__bufferSize = bufferSize
         pass
 
-    async def handle(self):
+    async def handle(self, msg=""):
+        global connectNum
+        global lock
         try:
             # 1.解析请求
             receiveMsg = self.__connection.recv(self.__bufferSize)
@@ -95,10 +139,24 @@ class WorkCoroutine:
             request = HttpRequest()
             request = request.parseRequest(receiveMsg)
             response = HttpResponse(self.__connection)
+
+            # 达到最大协程，直接返回
+            if msg == "Full":
+                response = HttpResponse(self.__connection)
+                response.setCode(404)
+                response.setData_From_Url(WEB_ROOT+'/ERROR.html')
+                response.response()
+                lock.acquire()
+                connectNum -= 1
+                lock.release()
+                return
             if request == {}:
                 response.setCode(404)
                 response.setData_From_Url(WEB_ROOT+"/404.html")
                 response.response()
+                lock.acquire()
+                connectNum -= 1
+                lock.release()
                 return
 
             # 2.url
@@ -150,13 +208,22 @@ class WorkCoroutine:
         except Exception as e:
             print(str(e.args))
 
+        lock.acquire()
+        connectNum -= 1
+        lock.release()
+        return
+
     def log(self, addr, data):
         date = time.strftime("%Y-%m-%d")
         path = LOG_ROOT+'/' + date+'.log'
 
         date = time.strftime("%Y-%m-%d %H:%M:%S")
         d = data.replace('\r\n', ' ')
-        s = "[\'" + date + "\'] " + str(addr) + " " + d+"\n"
+
+        lock.acquire()
+        s = "[\'" + date + "\'] " + \
+            str(addr) + "(connNum:"+str(connectNum)+") " + d+"\n"
+        lock.release()
 
         f = open(path, 'a')
         f.write(s)
